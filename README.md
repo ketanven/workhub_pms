@@ -36,27 +36,27 @@ The system is built using **Django (Backend)**, **React (Frontend – future sco
 ---
 
 ## 📁 Project Folder Structure
-
 workhub/
-├── venv/ # Virtual Environment (ignored in git)
+├── venv/                     # Virtual environment (ignored in Git)
 ├── requirements.txt
 ├── .gitignore
 ├── README.md
 │
 ├── workhub_backend/
-│ ├── manage.py
-│ ├── workhub_backend/
-│ │ ├── settings.py
-│ │ ├── urls.py
-│ │ ├── asgi.py
-│ │ └── wsgi.py
-│ │
-│ ├── accounts/
-│ ├── projects/
-│ ├── tasks/
-│ ├── notifications/
-│ ├── reports/
-│ └── common/
+│   ├── manage.py
+│   ├── workhub_backend/
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   ├── asgi.py
+│   │   └── wsgi.py
+│   │
+│   ├── accounts/
+│   ├── projects/
+│   ├── tasks/
+│   ├── notifications/
+│   ├── reports/
+│   └── common/
+
 
 
 
@@ -77,3 +77,11 @@ python3 --version
 pip3 --version
 mysql --version
 git --version
+
+
+#To Start the Project
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python manage.py runserver
+
