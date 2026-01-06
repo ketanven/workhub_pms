@@ -36,26 +36,57 @@ The system is built using **Django (Backend)**, **React (Frontend – future sco
 ---
 
 ## 📁 Project Folder Structure
+```bash
 workhub/
-├── venv/                     # Virtual environment (ignored in Git)
-├── requirements.txt
+├── venv/ # Virtual environment (ignored in Git)
+├── requirements.txt # Project dependencies
 ├── .gitignore
+├── .env # Environment variables (ignored in Git)
+├── env.example # Sample env file
 ├── README.md
+├── manage.py
 │
-├── workhub_backend/
-│   ├── manage.py
-│   ├── workhub_backend/
-│   │   ├── settings.py
-│   │   ├── urls.py
-│   │   ├── asgi.py
-│   │   └── wsgi.py
-│   │
-│   ├── accounts/
-│   ├── projects/
-│   ├── tasks/
-│   ├── notifications/
-│   ├── reports/
-│   └── common/
+├── common/
+│ └── responses.py # Common API response handler
+│
+├── core/ # Single main app
+│ ├── migrations/
+│ │ ├── init.py
+│ │ └── 0001_initial.py
+│ │
+│ ├── models/
+│ │ ├── init.py
+│ │ ├── user.py
+│ │ ├── project.py
+│ │ └── task.py
+│ │
+│ ├── serializers/
+│ │ ├── Admin/
+│ │ │ └── login_serializer.py
+│ │ └── User/
+│ │ └── login_serializer.py
+│ │
+│ ├── controllers/
+│ │ ├── Admin/
+│ │ │ └── auth_controller.py
+│ │ └── User/
+│ │ └── auth_controller.py
+│ │
+│ ├── services/
+│ │ ├── Admin/
+│ │ │ └── auth_service.py
+│ │ └── User/
+│ │ └── auth_service.py
+│ │
+│ ├── urls.py
+│ └── apps.py
+│
+└── workhub/
+├── init.py
+├── settings.py
+├── urls.py
+├── asgi.py
+└── wsgi.py
 
 
 
@@ -79,9 +110,34 @@ mysql --version
 git --version
 
 
+
+#Create a .env file using env.example:
+DEBUG=True
+SECRET_KEY=your-secret-key
+
+DB_NAME=workhub_db
+DB_USER=root
+DB_PASSWORD=yourpassword
+DB_HOST=localhost
+DB_PORT=3306
+
+ALLOWED_HOSTS=127.0.0.1,localhost
+LANGUAGE_CODE=en-us
+TIME_ZONE=Asia/Kolkata
+
+
 #To Start the Project
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 python manage.py runserver
+
+#Overview
+Request
+  → Serializer (validation)
+    → Controller (API layer)
+      → Service (business logic)
+        → Model (database)
+      → Common Response
+
 
