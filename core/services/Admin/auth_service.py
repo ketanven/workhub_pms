@@ -11,7 +11,7 @@ class AdminAuthService:
         user = authenticate(email=email, password=password)
 
         if not user:
-            raise AuthenticationFailed("Invalid email or password")
+            raise AuthenticationFailed("Invalid email or password provided.")
 
         if user.role != 'admin':
             raise AuthenticationFailed("Access denied. Admin only.")
