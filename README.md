@@ -141,3 +141,27 @@ Request
       → Common Response
 
 
+#####External Needs
+1) DBngin - https://dbngin.com/
+  - For mysql database management
+
+2) Mysql Workbench - https://dev.mysql.com/downloads/workbench/
+  - For mysql database 
+
+3) Teams - https://teams.microsoft.com/
+  - For collaboration
+
+4) Postman - https://www.getpostman.com/
+  - For API testing
+
+5) Git - https://git-scm.com/
+  - For version control
+
+6) VS Code - https://code.visualstudio.com/
+  - For code editing
+  
+7) GitHub - https://github.com/
+  - For version control
+
+
+
