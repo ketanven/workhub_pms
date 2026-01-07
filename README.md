@@ -154,13 +154,10 @@ Request
 4) Postman - https://www.getpostman.com/
   - For API testing
 
-5) Git - https://git-scm.com/
-  - For version control
-
-6) VS Code - https://code.visualstudio.com/
+5) VS Code - https://code.visualstudio.com/
   - For code editing
-  
-7) GitHub - https://github.com/
+
+6) GitHub - https://github.com/
   - For version control
 
 
