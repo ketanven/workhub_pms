@@ -7,13 +7,21 @@ The system is built using **Django (Backend)**, **React (Frontend – future sco
 
 ## 🚀 Features (Current Scope)
 
-- User & Role Management (Admin, Manager, Team Member)
-- Project Management
-- Task Management
-- Modular Django App Structure
-- REST API Ready
+- JWT Authentication & Role-Based Access (Admin, Project Manager, Team Member)
+- User Management (Create, Update, Deactivate Users)
+- Project Management (Create, Assign, Track Progress)
+- Task Management (Status, Priority, Subtasks, File Attachments)
+- Comments & Team Collaboration
+- Kanban Board (Drag & Drop Tasks)
+- Gantt Chart (Project Timeline View)
+- Notifications (In-App & Email)
+- Time Tracking & Timesheets
+- Reports & Analytics (Project & User Reports)
+- File Management per Project & Task
+- Calendar & Deadline Tracking
+- REST API Ready (Django + React)
+- Modular Django App Architecture
 - MySQL Database Support
-- Clean Service-Based Architecture
 - Git Version Control
 
 ---
