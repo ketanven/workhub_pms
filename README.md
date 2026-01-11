@@ -159,6 +159,32 @@ Request
 
 6) GitHub - https://github.com/
   - For version control
+```
 
+```bash
+#Fore new Migrations
+1 . Create a new file: core/models/comment.py
+2. comment.py
+  from django.db import models
+  from .project import Project
+  from .user import User
+
+  class Comment(models.Model):
+      message = models.TextField()
+      project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='comments')
+      user = models.ForeignKey(User, on_delete=models.CASCADE)
+      created_at = models.DateTimeField(auto_now_add=True)
+
+      def __str__(self):
+          return self.message[:30]
+3. Register the model in models/__init__.py - from .comment import Comment 
+4. Run makemigrations - python manage.py makemigrations core
+5. You will see: ->   ├── 0002_comment.py   ✅ NEW //inside core/migrations
+6. python manage.py migrate
+
+
+#To check migrations status
+python manage.py showmigrations core
+```
 
 

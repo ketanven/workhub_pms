@@ -13,6 +13,7 @@ staticfiles/
 
 # Environment variables
 .env
+.envrc
 
 # OS
 .DS_Store
