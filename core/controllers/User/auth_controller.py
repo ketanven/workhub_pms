@@ -10,6 +10,7 @@ from core.serializers.User.auth_serializer import (
     ForgotPasswordSerializer,
     ResetPasswordSerializer
 )
+from core.authentication import UserJWTAuthentication
 from core.services.User.auth_service import UserAuthService
 from common.responses import ApiResponse
 
@@ -76,6 +77,9 @@ class UserLoginView(APIView):
             )
 
 class UserProfileView(APIView):
+    authentication_classes = [UserJWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
         serializer = UserProfileSerializer(request.user)
         return ApiResponse.success(
@@ -110,6 +114,9 @@ class UserProfileView(APIView):
             )
 
 class UserChangePasswordView(APIView):
+    authentication_classes = [UserJWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
         serializer = ChangePasswordSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)

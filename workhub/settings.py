@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from corsheaders.defaults import default_headers
 load_dotenv()
 
 
@@ -31,9 +32,23 @@ DEBUG = os.getenv('DEBUG') == 'True'
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',')
 
 CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
     "http://localhost:3001",
     "http://127.0.0.1:3001",
+    "http://localhost:3002",
+    "http://127.0.0.1:3002",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
 ]
+
+CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    "x-skip-error-toast",
+]
+
+CORS_ALLOW_CREDENTIALS = True
 
 
 # Application definition

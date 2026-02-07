@@ -52,6 +52,7 @@ class AdminLoginView(APIView):
             )
 
 class AdminProfileView(APIView):
+    authentication_classes = [AdminJWTAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -88,6 +89,7 @@ class AdminProfileView(APIView):
             )
 
 class AdminChangePasswordView(APIView):
+    authentication_classes = [AdminJWTAuthentication]
     permission_classes = [IsAuthenticated]
 
     def post(self, request):

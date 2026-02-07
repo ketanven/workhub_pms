@@ -2,7 +2,7 @@ from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import AuthenticationFailed
 from django.conf import settings
 import jwt
-from core.models import Admin
+from core.models import Admin, User
 
 class AdminJWTAuthentication(BaseAuthentication):
     def authenticate(self, request):
@@ -40,3 +40,40 @@ class AdminJWTAuthentication(BaseAuthentication):
             raise AuthenticationFailed('User is inactive')
 
         return (admin, None)
+
+class UserJWTAuthentication(BaseAuthentication):
+    def authenticate(self, request):
+        auth_header = request.headers.get('Authorization')
+        if not auth_header:
+            return None
+
+        try:
+            # Header format: "Bearer <token>"
+            prefix, token = auth_header.split(' ')
+            if prefix != 'Bearer':
+                raise AuthenticationFailed('Authorization header must start with Bearer')
+        except ValueError:
+             raise AuthenticationFailed('Invalid authorization header format')
+
+        try:
+            # Decode the token
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed('Token has expired')
+        except jwt.InvalidTokenError:
+            raise AuthenticationFailed('Invalid token')
+
+        # Check if the token is for a User
+        user_id = payload.get('user_id')
+        if not user_id:
+            raise AuthenticationFailed('Invalid token payload')
+
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            raise AuthenticationFailed('User not found')
+
+        if not user.is_active:
+            raise AuthenticationFailed('User is inactive')
+
+        return (user, None)
