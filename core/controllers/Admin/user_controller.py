@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework import status
 from django.contrib.auth import get_user_model
+from rest_framework.permissions import IsAuthenticated
 from core.serializers.Admin.user_serializer import (
     AdminUserSerializer, 
     AdminUserCreateSerializer, 
@@ -9,6 +10,7 @@ from core.serializers.Admin.user_serializer import (
 from core.services.Admin.user_service import AdminUserService
 from common.responses import ApiResponse
 from rest_framework.pagination import PageNumberPagination
+from core.authentication import AdminJWTAuthentication
 
 User = get_user_model()
 
@@ -21,7 +23,8 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
 class AdminUserListView(APIView):
-    # Middleware handles auth
+    authentication_classes = [AdminJWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         search = request.query_params.get('search')
@@ -52,7 +55,8 @@ class AdminUserListView(APIView):
             return ApiResponse.error(message=message, status=status.HTTP_400_BAD_REQUEST)
 
 class AdminUserDetailView(APIView):
-    # Middleware handles auth
+    authentication_classes = [AdminJWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get_object(self, pk):
         try:

@@ -9,6 +9,7 @@ class AdminAuthMiddleware(MiddlewareMixin):
     def process_request(self, request):
         auth_header = request.headers.get('Authorization')
         if not auth_header:
+             print("No auth header")
              return ApiResponse.json_error(message='Authentication credentials were not provided.', status=401)
 
         try:

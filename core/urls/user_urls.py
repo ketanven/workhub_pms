@@ -7,6 +7,10 @@ from core.controllers.User.auth_controller import (
     UserForgotPasswordView,
     UserResetPasswordView
 )
+from core.controllers.User.client_controller import (
+    UserClientListView,
+    UserClientDetailView
+)
 from django.utils.decorators import decorator_from_middleware
 from core.middleware.user_auth import UserAuthMiddleware
 
@@ -22,4 +26,8 @@ urlpatterns = [
     # Protected routes
     path('profile/', user_auth_required(UserProfileView.as_view()), name='user-profile'),
     path('change-password/', user_auth_required(UserChangePasswordView.as_view()), name='user-change-password'),
+
+    # Client Management
+    path('clients/', user_auth_required(UserClientListView.as_view()), name='user-clients'),
+    path('clients/<uuid:client_id>/', user_auth_required(UserClientDetailView.as_view()), name='user-client-detail'),
 ]
