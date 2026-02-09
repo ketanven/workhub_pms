@@ -11,6 +11,10 @@ from core.controllers.User.client_controller import (
     UserClientListView,
     UserClientDetailView
 )
+from core.controllers.User.project_controller import (
+    UserProjectListView,
+    UserProjectDetailView
+)
 from django.utils.decorators import decorator_from_middleware
 from core.middleware.user_auth import UserAuthMiddleware
 
@@ -30,4 +34,8 @@ urlpatterns = [
     # Client Management
     path('clients/', user_auth_required(UserClientListView.as_view()), name='user-clients'),
     path('clients/<uuid:client_id>/', user_auth_required(UserClientDetailView.as_view()), name='user-client-detail'),
+
+    # Project Management
+    path('projects/', user_auth_required(UserProjectListView.as_view()), name='user-projects'),
+    path('projects/<uuid:project_id>/', user_auth_required(UserProjectDetailView.as_view()), name='user-project-detail'),
 ]
