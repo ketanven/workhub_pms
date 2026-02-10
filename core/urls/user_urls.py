@@ -15,6 +15,10 @@ from core.controllers.User.project_controller import (
     UserProjectListView,
     UserProjectDetailView
 )
+from core.controllers.User.task_controller import (
+    UserTaskListView,
+    UserTaskDetailView
+)
 from django.utils.decorators import decorator_from_middleware
 from core.middleware.user_auth import UserAuthMiddleware
 
@@ -38,4 +42,8 @@ urlpatterns = [
     # Project Management
     path('projects/', user_auth_required(UserProjectListView.as_view()), name='user-projects'),
     path('projects/<uuid:project_id>/', user_auth_required(UserProjectDetailView.as_view()), name='user-project-detail'),
+
+    # Task Management
+    path('tasks/', user_auth_required(UserTaskListView.as_view()), name='user-tasks'),
+    path('tasks/<uuid:task_id>/', user_auth_required(UserTaskDetailView.as_view()), name='user-task-detail'),
 ]
