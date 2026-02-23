@@ -1,125 +1,149 @@
-# WorkHub – Project Management System (PMS)
+# WorkHub Backend
 
-WorkHub is a web-based **Project Management System** designed to help teams plan, organize, and track projects and tasks efficiently.  
-The system is built using **Django (Backend)**, **React (Frontend – future scope)**, and **MySQL (Database)**, following a clean and modular architecture suitable for academic and real-world use.
+WorkHub is a Django + DRF backend for a freelancer work management system.
+It now includes end-to-end modules for authentication, management, workbench time tracking, invoicing, analytics, reporting, productivity scoring, client trust, calendar, kanban, notifications, files, and workspace settings.
 
----
+## What Is Implemented
 
-## 🚀 Features (Current Scope)
+### Auth and Identity
+- Admin auth and profile flows
+- User auth and profile flows
+- JWT-based protected APIs (middleware-based auth guards)
 
-- JWT Authentication & Role-Based Access (Admin, Project Manager, Team Member)
-- User Management (Create, Update, Deactivate Users)
-- Project Management (Create, Assign, Track Progress)
-- Task Management (Status, Priority, Subtasks, File Attachments)
-- Comments & Team Collaboration
-- Kanban Board (Drag & Drop Tasks)
-- Gantt Chart (Project Timeline View)
-- Notifications (In-App & Email)
-- Time Tracking & Timesheets
-- Reports & Analytics (Project & User Reports)
-- File Management per Project & Task
-- Calendar & Deadline Tracking
-- REST API Ready (Django + React)
-- Modular Django App Architecture
-- MySQL Database Support
-- Git Version Control
+### Management
+- Clients CRUD
+- Projects CRUD
+- Tasks CRUD
+- Project-specific task listing/creation
 
----
+### Workbench (Time Tracking)
+- Overview, project/task picker, active timer restore
+- Timer lifecycle: start, pause, resume, break start/stop, stop
+- Manual time entries
+- Time entries listing, patch, delete
+- Offline sync batch ingest
 
-## 🛠️ Tech Stack
+### Analysis
+- KPI summary
+- Web analytics series
+- Earnings trend
+- Time allocation split
+- Top clients
+- Task accuracy
+- Invoice health
+- Analysis export dataset endpoint
 
-### Backend
-- **Python**: 3.10+
-- **Django**: 4.x
-- **Django REST Framework**
-- **MySQL**: 8.x
+### Invoicing
+- Invoice list/create/update/detail
+- Create invoice from time entries
+- Submit/send/reminder/mark-paid actions
+- Payment add/list
+- Invoice PDF endpoint
+- Invoice stats
+- Smart numbering config + next preview
+- Invoice version history + restore
 
-### Frontend (Future Scope)
-- **React.js**
+### Reporting
+- Earnings report
+- Time allocation report
+- Project performance report
+- Client analytics report
+- Monthly bundle
+- Report export job endpoint
 
-### Tools
-- Git & GitHub
-- Virtual Environment (venv)
+### Productivity
+- Productivity summary
+- Weekly trend
+- Task variance
+- On-time rate
+- Utilization
+- Rules update
 
----
+### Client Trust
+- Trust summary
+- Client trust list
+- Per-client trust history
+- Trust recalculation
+- Rules update
+- Risk alerts
 
-## 📁 Project Folder Structure
-```bash
-workhub/
-├── venv/ # Virtual environment (ignored in Git)
-├── requirements.txt # Project dependencies
-├── .gitignore
-├── .env # Environment variables (ignored in Git)
-├── env.example # Sample env file
-├── README.md
-├── manage.py
-│
-├── common/
-│ └── responses.py # Common API response handler
-│
-├── core/ # Single main app
-│ ├── migrations/
-│ │ ├── init.py
-│ │ └── 0001_initial.py
-│ │
-│ ├── models/
-│ │ ├── init.py
-│ │ ├── user.py
-│ │ ├── project.py
-│ │ └── task.py
-│ │
-│ ├── serializers/
-│ │ ├── Admin/
-│ │ │ └── login_serializer.py
-│ │ └── User/
-│ │ └── login_serializer.py
-│ │
-│ ├── controllers/
-│ │ ├── Admin/
-│ │ │ └── auth_controller.py
-│ │ └── User/
-│ │ └── auth_controller.py
-│ │
-│ ├── services/
-│ │ ├── Admin/
-│ │ │ └── auth_service.py
-│ │ └── User/
-│ │ └── auth_service.py
-│ │
-│ ├── urls.py
-│ └── apps.py
-│
-└── workhub/
-├── init.py
-├── settings.py
-├── urls.py
-├── asgi.py
-└── wsgi.py
+### Calendar
+- Event list/create/detail/update/delete
+- Task feed
+- Invoice feed
 
+### Kanban
+- Boards list/create/detail/update/delete
+- Column create/update/delete
+- Card create/update/delete/move
 
+### Common Platform APIs
+- Notifications list + mark read
+- File upload + file metadata
+- Workspace settings get/update
+- Health endpoint
 
-
----
-
-## ⚙️ Prerequisites
-
-Make sure the following are installed:
-
+## Tech Stack
 - Python 3.10+
-- pip
-- MySQL Server
-- Git
+- Django 4.2.x
+- Django REST Framework
+- MySQL
 
-Check versions:
+## Project Structure
+
+```text
+workhub/
+├── common/
+│   └── responses.py
+├── core/
+│   ├── controllers/
+│   │   ├── Admin/
+│   │   └── User/
+│   ├── services/
+│   │   ├── Admin/
+│   │   └── User/
+│   ├── serializers/
+│   │   ├── Admin/
+│   │   └── User/
+│   ├── models/
+│   │   ├── user.py, admin.py, client.py, project.py, task.py
+│   │   ├── workbench.py
+│   │   ├── invoicing.py
+│   │   ├── operations.py
+│   │   ├── calendar_kanban.py
+│   │   └── platform.py
+│   ├── management/
+│   │   ├── commands/
+│   │   └── seeders/
+│   ├── migrations/
+│   └── urls/
+├── workhub/
+│   ├── settings.py
+│   └── urls.py
+├── manage.py
+└── requirements.txt
+```
+
+## Request Flow
+
+```text
+Request -> Controller -> Serializer -> Service -> Model -> DB
+                                   -> common ApiResponse
+```
+
+## Setup
+
+### 1) Create environment
+
 ```bash
-python3 --version
-pip3 --version
-mysql --version
-git --version
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
 
+### 2) Configure `.env`
 
-
-#Create a .env file using env.example:
+```env
 DEBUG=True
 SECRET_KEY=your-secret-key
 
@@ -132,67 +156,103 @@ DB_PORT=3306
 ALLOWED_HOSTS=127.0.0.1,localhost
 LANGUAGE_CODE=en-us
 TIME_ZONE=Asia/Kolkata
-
-
-#To Start the Project
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-python manage.py runserver
-
-#Overview
-Request
-  → Serializer (validation)
-    → Controller (API layer)
-      → Service (business logic)
-        → Model (database)
-      → Common Response
-
-
-#####External Needs
-1) DBngin - https://dbngin.com/
-  - For mysql database management
-
-2) Mysql Workbench - https://dev.mysql.com/downloads/workbench/
-  - For mysql database 
-
-3) Teams - https://teams.microsoft.com/
-  - For collaboration
-
-4) Postman - https://www.getpostman.com/
-  - For API testing
-
-5) VS Code - https://code.visualstudio.com/
-  - For code editing
-
-6) GitHub - https://github.com/
-  - For version control
 ```
+
+### 3) Run migrations
 
 ```bash
-#Fore new Migrations
-1 . Create a new file: core/models/comment.py
-2. comment.py
-  from django.db import models
-  from .project import Project
-  from .user import User
-
-  class Comment(models.Model):
-      message = models.TextField()
-      project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='comments')
-      user = models.ForeignKey(User, on_delete=models.CASCADE)
-      created_at = models.DateTimeField(auto_now_add=True)
-
-      def __str__(self):
-          return self.message[:30]
-3. Register the model in models/__init__.py - from .comment import Comment 
-4. Run makemigrations - python manage.py makemigrations core
-5. You will see: ->   ├── 0002_comment.py   ✅ NEW //inside core/migrations
-6. python manage.py migrate
-
-
-#To check migrations status
-python manage.py showmigrations core
+python3 manage.py migrate
 ```
 
+### 4) Start server
 
+```bash
+python3 manage.py runserver
+```
+
+## Routing Overview
+
+- Base prefix: `/api/`
+- Admin routes: `/api/admin/...`
+- User routes: `/api/user/...`
+
+Examples:
+- `/api/user/workbench/overview/`
+- `/api/user/invoices/`
+- `/api/user/calendar/events/`
+- `/api/user/kanban/boards/`
+
+## Seeding (Important)
+
+Two seed commands are available.
+
+### A) Management-only seed
+Seeds client/project/task demo data.
+
+```bash
+python3 manage.py seed_management_data --module all
+python3 manage.py seed_management_data --module clients
+python3 manage.py seed_management_data --module projects
+python3 manage.py seed_management_data --module tasks
+```
+
+### B) Full dashboard seed
+Seeds all modules with linked demo data.
+
+```bash
+python3 manage.py seed_dashboard --module all
+```
+
+Or module-wise:
+
+```bash
+python3 manage.py seed_dashboard --module workbench
+python3 manage.py seed_dashboard --module invoicing
+python3 manage.py seed_dashboard --module analysis
+python3 manage.py seed_dashboard --module reports
+python3 manage.py seed_dashboard --module productivity
+python3 manage.py seed_dashboard --module trust
+python3 manage.py seed_dashboard --module calendar
+python3 manage.py seed_dashboard --module kanban
+python3 manage.py seed_dashboard --module platform
+```
+
+### Demo user
+- Email: `demo@workhub.com`
+- Password: `password123`
+
+## Migration Notes
+
+Current migration chain includes:
+- `0001` to `0004`: auth/client/project/task base
+- `0005` to `0009`: workbench, invoicing, operations, calendar/kanban, platform models
+
+Useful commands:
+
+```bash
+python3 manage.py showmigrations core
+python3 manage.py makemigrations core
+python3 manage.py migrate
+```
+
+## API Testing Tips
+
+- Always send user auth token for protected `/api/user/...` endpoints:
+
+```http
+Authorization: Bearer <access_token>
+```
+
+- Use Postman collection/folders module-wise:
+  - Workbench
+  - Analysis
+  - Invoicing
+  - Reports
+  - Productivity
+  - Client Trust
+  - Calendar
+  - Kanban
+
+## Status
+
+Backend is ready for frontend integration with seeded demo data support for UI validation.
