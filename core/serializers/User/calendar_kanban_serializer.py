@@ -43,9 +43,16 @@ class KanbanColumnSerializer(serializers.ModelSerializer):
     class Meta:
         model = KanbanColumn
         fields = '__all__'
+        extra_kwargs = {
+            'board': {'required': False},
+        }
 
 
 class KanbanCardSerializer(serializers.ModelSerializer):
     class Meta:
         model = KanbanCard
         fields = '__all__'
+        extra_kwargs = {
+            'board': {'required': False},
+            'column': {'required': False},
+        }

@@ -6,7 +6,7 @@ from core.controllers.Admin.auth_controller import (
     AdminChangePasswordView,
     AdminForgotPasswordView
 )
-from core.controllers.Admin.user_controller import AdminUserListView, AdminUserDetailView
+from core.controllers.Admin.user_controller import AdminUserListView, AdminUserDetailView, AdminUserWorkspaceView
 
 from django.utils.decorators import decorator_from_middleware
 from core.middleware.admin_auth import AdminAuthMiddleware
@@ -22,4 +22,5 @@ urlpatterns = [
     # User Management
     path('users/', admin_auth_required(AdminUserListView.as_view()), name='admin-user-list'),
     path('users/<int:pk>/', admin_auth_required(AdminUserDetailView.as_view()), name='admin-user-detail'),
+    path('users/<int:pk>/workspace/', admin_auth_required(AdminUserWorkspaceView.as_view()), name='admin-user-workspace'),
 ]

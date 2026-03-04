@@ -65,6 +65,7 @@ from core.controllers.User.operations_controller import (
 )
 from core.controllers.User.invoicing_controller import (
     InvoiceListCreateView,
+    InvoiceGenerateView,
     InvoiceFromTimeEntriesView,
     InvoiceDetailView,
     InvoiceSubmitView,
@@ -159,6 +160,7 @@ urlpatterns = [
 
     # Invoicing
     path('invoices/stats/', user_auth_required(InvoiceStatsView.as_view()), name='invoices-stats'),
+    path('invoices/generate/', user_auth_required(InvoiceGenerateView.as_view()), name='invoices-generate'),
     path('invoices/from-time-entries/', user_auth_required(InvoiceFromTimeEntriesView.as_view()), name='invoices-from-time-entries'),
     path('invoices/', user_auth_required(InvoiceListCreateView.as_view()), name='invoices'),
     path('invoices/<int:invoice_id>/', user_auth_required(InvoiceDetailView.as_view()), name='invoice-detail'),

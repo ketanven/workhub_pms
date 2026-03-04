@@ -563,12 +563,36 @@ class DashboardSeeder:
 
         todo, _ = KanbanColumn.objects.get_or_create(board=board, name='To Do', defaults={'sort_order': 1})
         in_progress, _ = KanbanColumn.objects.get_or_create(board=board, name='In Progress', defaults={'sort_order': 2})
-        done, _ = KanbanColumn.objects.get_or_create(board=board, name='Done', defaults={'sort_order': 3, 'is_done_column': True})
+        review, _ = KanbanColumn.objects.get_or_create(board=board, name='Review', defaults={'sort_order': 3})
+        done, _ = KanbanColumn.objects.get_or_create(board=board, name='Done', defaults={'sort_order': 4, 'is_done_column': True})
 
         card_map = [
+            # To Do
             (todo, 'Define API contracts', 'high', 'todo'),
+            (todo, 'Draft payout details UX', 'medium', 'todo'),
+            (todo, 'Map task status rules', 'medium', 'todo'),
+            (todo, 'Prepare webhook retry flow', 'low', 'todo'),
+            (todo, 'Add overdue invoice reminder UI', 'high', 'todo'),
+            (todo, 'Review timezone formatting edge cases', 'low', 'todo'),
+            # In Progress
             (in_progress, 'Implement invoice endpoints', 'urgent', 'in_progress'),
+            (in_progress, 'Refactor kanban drag drop persistence', 'high', 'in_progress'),
+            (in_progress, 'Improve PDF header rendering', 'medium', 'in_progress'),
+            (in_progress, 'Add analytics summary cards', 'medium', 'in_progress'),
+            (in_progress, 'Optimize board detail payload', 'high', 'in_progress'),
+            (in_progress, 'Write e2e test for invoice generate', 'high', 'in_progress'),
+            # Review
+            (review, 'Review invoice payload validation', 'high', 'in_progress'),
+            (review, 'Validate PDF multi-page layout', 'medium', 'in_progress'),
+            (review, 'Review kanban API error handling', 'medium', 'in_progress'),
+            (review, 'Peer review auth middleware logs', 'low', 'in_progress'),
+            # Done
             (done, 'Create auth flow', 'medium', 'done'),
+            (done, 'Seed demo clients and projects', 'low', 'done'),
+            (done, 'Add invoice number sequencing', 'medium', 'done'),
+            (done, 'Implement mark-as-paid endpoint', 'medium', 'done'),
+            (done, 'Enable workspace settings API', 'low', 'done'),
+            (done, 'Fix UTF-8 JSON fallback bug', 'high', 'done'),
         ]
 
         seeded_cards = []

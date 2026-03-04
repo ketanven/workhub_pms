@@ -107,3 +107,26 @@ class AdminUserDetailView(APIView):
             message="User archived successfully",
             status=status.HTTP_200_OK
         )
+
+
+class AdminUserWorkspaceView(APIView):
+    authentication_classes = [AdminJWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self, pk):
+        try:
+            return User.objects.get(pk=pk)
+        except User.DoesNotExist:
+            return None
+
+    def get(self, request, pk):
+        user = self.get_object(pk)
+        if not user:
+            return ApiResponse.error(message="User not found", status=status.HTTP_404_NOT_FOUND)
+
+        data = AdminUserService.workspace_data(user)
+        return ApiResponse.success(
+            message="User workspace fetched successfully",
+            data=data,
+            status=status.HTTP_200_OK
+        )

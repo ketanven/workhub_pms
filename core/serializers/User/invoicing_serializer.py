@@ -83,6 +83,12 @@ class InvoiceFromTimeEntriesSerializer(serializers.Serializer):
     currency = serializers.CharField(required=False, default='USD')
 
 
+class InvoiceGenerateSerializer(serializers.Serializer):
+    client_id = serializers.UUIDField()
+    project_id = serializers.UUIDField()
+    payout_details = serializers.DictField(required=False)
+
+
 class InvoicePaymentCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = InvoicePayment

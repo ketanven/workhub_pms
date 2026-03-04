@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.response import Response
 from common.responses import ApiResponse
 from core.models.invoicing import Invoice, InvoicePayment, InvoiceVersion
 from core.serializers.User.invoicing_serializer import (
@@ -9,6 +10,7 @@ from core.serializers.User.invoicing_serializer import (
     InvoiceCreateSerializer,
     InvoiceUpdateSerializer,
     InvoiceFromTimeEntriesSerializer,
+    InvoiceGenerateSerializer,
     InvoicePaymentSerializer,
     InvoicePaymentCreateSerializer,
     MarkPaidSerializer,
@@ -75,6 +77,49 @@ class InvoiceFromTimeEntriesView(APIView):
             return ApiResponse.success('Invoice draft created from time entries', InvoiceSerializer(invoice).data, status.HTTP_201_CREATED)
         except Exception as e:
             return ApiResponse.error(_error_message(e), status.HTTP_400_BAD_REQUEST)
+
+
+class InvoiceGenerateView(APIView):
+    def post(self, request):
+        serializer = InvoiceGenerateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        try:
+            result = InvoicingService.generate_project_invoice_pdf(
+                user=request.user,
+                client_id=serializer.validated_data['client_id'],
+                project_id=serializer.validated_data['project_id'],
+                payout_details=serializer.validated_data.get('payout_details'),
+            )
+        except Exception as e:
+            return ApiResponse.error(_error_message(e), status.HTTP_400_BAD_REQUEST)
+
+        wants_json = (
+            str(request.query_params.get('as_json', '')).lower() in ('1', 'true', 'yes')
+            or 'application/json' in (request.headers.get('Accept') or '')
+        )
+        if wants_json:
+            json_result = {k: v for k, v in result.items() if k != 'pdf_bytes'}
+            if json_result.get('url'):
+                json_result['url'] = request.build_absolute_uri(json_result['url'])
+            if json_result.get('file_url'):
+                json_result['file_url'] = request.build_absolute_uri(json_result['file_url'])
+            if json_result.get('pdf_url'):
+                json_result['pdf_url'] = request.build_absolute_uri(json_result['pdf_url'])
+            return Response(
+                {
+                    'status': status.HTTP_201_CREATED,
+                    'message': 'Invoice PDF generated successfully',
+                    **json_result,
+                },
+                status=status.HTTP_201_CREATED,
+            )
+
+        response = HttpResponse(result['pdf_bytes'], content_type='application/pdf')
+        response['Content-Disposition'] = f'inline; filename="{result["file_name"]}"'
+        if result.get('file_url'):
+            response['X-PDF-URL'] = request.build_absolute_uri(result['file_url'])
+        return response
 
 
 class InvoiceDetailView(APIView):
