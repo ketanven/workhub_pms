@@ -1,11 +1,14 @@
 from rest_framework import serializers
 from core.models import Admin
+from .role_serializer import RoleDetailSerializer
 
 class AdminLoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
 
 class AdminProfileSerializer(serializers.ModelSerializer):
+    role = RoleDetailSerializer(read_only=True)
+    
     class Meta:
         model = Admin
         fields = ['id', 'email', 'first_name', 'last_name', 'role', 'created_at']

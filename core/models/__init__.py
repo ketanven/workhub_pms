@@ -36,3 +36,4 @@ from .calendar_kanban import (
     KanbanCardLabel,
 )
 from .platform import Notification, File, WorkspaceSetting
+from .roles import Permission, Role

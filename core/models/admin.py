@@ -3,17 +3,12 @@ from django.contrib.auth.hashers import make_password, check_password
 import uuid
 
 class Admin(models.Model):
-    ROLE_CHOICES = (
-        ('master_admin', 'Master Admin'),
-        ('sub_admin', 'Sub Admin'),
-    )
-
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     first_name = models.CharField(max_length=150, blank=True)
     last_name = models.CharField(max_length=150, blank=True)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=128)
-    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='sub_admin')
+    role = models.ForeignKey('core.Role', on_delete=models.SET_NULL, null=True, blank=True, related_name='admins')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
