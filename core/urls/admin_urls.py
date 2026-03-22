@@ -11,6 +11,13 @@ from core.controllers.Admin.user_controller import AdminUserListView, AdminUserD
 from core.controllers.Admin.role_controller import RoleListView, RoleDetailView
 from core.controllers.Admin.permission_controller import PermissionGroupedListView, RolePermissionAssignView
 from core.controllers.Admin.admin_staff_controller import AdminStaffListView, AdminStaffDetailView, AdminStaffToggleStatusView
+
+from core.controllers.Admin.dashboard_controller import (
+    DashboardStatsView, RevenueChartView, TaskStatsView, ActivityFeedView, AnalysisView
+)
+from core.controllers.Admin.invoice_controller import AdminInvoiceListView, AdminFreelancerListView
+from core.controllers.Admin.report_controller import ReportTemplateListView, ReportGenerateView, ReportRunListView
+
 from django.utils.decorators import decorator_from_middleware
 from core.middleware.admin_auth import AdminAuthMiddleware
 
@@ -37,4 +44,25 @@ urlpatterns = [
     path('staff/', admin_auth_required(AdminStaffListView.as_view()), name='admin-staff-list'),
     path('staff/<uuid:pk>/', admin_auth_required(AdminStaffDetailView.as_view()), name='admin-staff-detail'),
     path('staff/<uuid:pk>/toggle-status/', admin_auth_required(AdminStaffToggleStatusView.as_view()), name='admin-staff-toggle-status'),
+
+    # Dashboard — Workbench
+    path('dashboard/stats/', admin_auth_required(DashboardStatsView.as_view()), name='admin-dashboard-stats'),
+    path('dashboard/revenue-chart/', admin_auth_required(RevenueChartView.as_view()), name='admin-revenue-chart'),
+    path('dashboard/task-stats/', admin_auth_required(TaskStatsView.as_view()), name='admin-task-stats'),
+    path('dashboard/activity/', admin_auth_required(ActivityFeedView.as_view()), name='admin-activity-feed'),
+
+    # Dashboard — Analysis
+    path('dashboard/analysis/', admin_auth_required(AnalysisView.as_view()), name='admin-analysis'),
+
+    # Invoices (Global)
+    path('invoices/', admin_auth_required(AdminInvoiceListView.as_view()), name='admin-invoice-list'),
+
+    # Freelancers (Dropdown)
+    path('freelancers/', admin_auth_required(AdminFreelancerListView.as_view()), name='admin-freelancer-list'),
+
+    # Reports
+    path('reports/templates/', admin_auth_required(ReportTemplateListView.as_view()), name='admin-report-templates'),
+    path('reports/generate/', admin_auth_required(ReportGenerateView.as_view()), name='admin-report-generate'),
+    path('reports/runs/', admin_auth_required(ReportRunListView.as_view()), name='admin-report-runs'),
 ]
+
